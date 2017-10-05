@@ -1,4 +1,4 @@
-##Writeup
+## Writeup
 
 **Vehicle Detection Project**
 
@@ -20,9 +20,9 @@ The goals / steps of this project are the following:
 [heatmap]: ./images/heatmap.png
 [video1]: ./project_video.mp4
 
-###Histogram of Oriented Gradients (HOG)
+### Histogram of Oriented Gradients (HOG)
 
-####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
+#### 1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
 To extract HOG features we rely on `hog()` function from `skimage.feature`. There is a short utility function called `get_hog_features()` in the second cell of IPython notebook, which is basically a wrapper around call to `hog()` with limiting some of the possible parameters (for example, we only use square blocks and cells and do power law correction).
 
@@ -38,7 +38,7 @@ Here is an example using the `YCrCb` color space and HOG parameters of `orientat
 
 ![hog_example]
 
-####2. Explain how you settled on your final choice of HOG parameters.
+#### 2. Explain how you settled on your final choice of HOG parameters.
 
 ##### Color space
 
@@ -125,7 +125,7 @@ Based on these values (plus HOG feature extraction settings) the final size of f
 
 One important note: I can understand that evaluating each parameter separately from the others might not find an optimum combination, but I think it is a good place to start.
 
-####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
+#### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
 After identifying settings for feature extraction earlier now is the time to configure a classifier.
 
@@ -144,9 +144,9 @@ Results are overwhelmingly in favor of a simple linear classifier. It showed the
 
 You can see the code used to run these tests by searching for `GridSearchCV` in IPython Notebook.
 
-###Sliding Window Search
+### Sliding Window Search
 
-####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
+#### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
 To do a window search I took the method from 'Hog Sub-sampling Window Search' lecture. It is very effective because HOG features are calculated only once for the whole image. You can find the method in submitted IPython Notebook, function name is `find_cars()`. I only did some minor changes: added `cells_per_step` and `color_space` as parameters and now method returns rectangles it found on the image instead of painting them directly on the image itself.
 
@@ -164,7 +164,7 @@ As for window overlapping I decided to use 75% overlap. Our cell size (16x16) fo
 
 Later when we apply our pipeline to video processing we can try different overlap parameters ans see how it performs.
 
-####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
+#### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
 Here are some examples of how the classifier works: 3 scales (1, 1.5 and 2), linear classifier trained on HOG features plus spatial binning and color histogram.
 
@@ -173,7 +173,7 @@ Here are some examples of how the classifier works: 3 scales (1, 1.5 and 2), lin
 
 ### Video Implementation
 
-####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
+#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 
 By running recognition pipeline with parameters (for HOG, spatial and color histogram binning) I've got a pipeline that on actual video lost the cars 50% of the time (although there were almost none false pasitives). I've tweaked the model a little by trying different parameter variation and finally ended up by increasing spatial binning resolution to 48x48. 
 
@@ -181,7 +181,7 @@ Below you can see the video using these parameters without joining overlapping r
 
 [![Project Video](http://img.youtube.com/vi/ljfXsTmoCMI/0.jpg)](http://www.youtube.com/watch?v=ljfXsTmoCMI)
 
-####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
+#### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
@@ -207,9 +207,9 @@ Resulting video with both lane and vehicle tracking is below:
 
 ---
 
-###Discussion
+### Discussion
 
-####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 The most important problem is not enough training data for our classifier. I think more different vehicles/non-vehicles would make classifier much better. We might also need more examples of different car types on the traning data.
 
