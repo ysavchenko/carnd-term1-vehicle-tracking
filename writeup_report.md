@@ -177,9 +177,17 @@ Here are some examples of how the classifier works: 3 scales (1, 1.5 and 2), lin
 
 By running recognition pipeline with parameters (for HOG, spatial and color histogram binning) I've got a pipeline that on actual video lost the cars 50% of the time (although there were almost none false pasitives). I've tweaked the model a little by trying different parameter variation and finally ended up by increasing spatial binning resolution to 48x48. 
 
+--
+
+**UPDATE:** After initial project submission I've was asked by the reviewer to update classifier to make sure it sees car almost all the time (there was 2-3 second interval where classifier did not see the car while it was clearly on the screen). So I've tuned classifier a little: changed spatial binning back to 16x16, removed color histograms (they seemed to be the ones preventing white car on light background recognition) and reduced scales of rectangles when scanning the image (from 1, 1.5 and 2 to 0.8, 1.2 and 1.6). Then I've updated parameters of heatmap joining, increased number of frames to 8 and threshold to 16.
+
+At the end I've got more false positives, but the car tracking is also much better.
+
+--
+
 Below you can see the video using these parameters without joining overlapping rectangles.
 
-[![Project Video](http://img.youtube.com/vi/ljfXsTmoCMI/0.jpg)](http://www.youtube.com/watch?v=ljfXsTmoCMI)
+[![Project Video](http://img.youtube.com/vi/veUf0brtvQ8/0.jpg)](http://www.youtube.com/watch?v=veUf0brtvQ8)
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
@@ -195,7 +203,7 @@ Additionally to joining rectangles I've also added exponential smoothing to them
 
 You can see the final result (with joining rectangles and smoothing in the video below):
 
-[![Joined Video](http://img.youtube.com/vi/btgYlCkczVk/0.jpg)](http://www.youtube.com/watch?v=btgYlCkczVk)
+[![Joined Video](http://img.youtube.com/vi/26zHfqO36a0/0.jpg)](http://www.youtube.com/watch?v=26zHfqO36a0)
 
 #### 3. (Bonus) Vehicles + lanes
 
@@ -203,7 +211,7 @@ I've also took image processing pipeline from the previous project and used it t
 
 Resulting video with both lane and vehicle tracking is below:
 
-[![Combined Video](http://img.youtube.com/vi/v-KW6GHUaLk/0.jpg)](http://www.youtube.com/watch?v=v-KW6GHUaLk)
+[![Combined Video](http://img.youtube.com/vi/rjChNzdxg_o/0.jpg)](http://www.youtube.com/watch?v=rjChNzdxg_o)
 
 ---
 
